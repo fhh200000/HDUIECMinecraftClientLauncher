@@ -1,6 +1,9 @@
 ﻿' This interface will provide methods to access configuration files.
 ' SPDX-License-Identifier: WTFPL
 
+Option Strict On
+Option Explicit On
+
 Namespace Common
     Public Interface IConfigurationProvider
 

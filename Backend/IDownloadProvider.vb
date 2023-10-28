@@ -1,6 +1,9 @@
 ﻿' This interface will provide methods to download files.
 ' SPDX-License-Identifier: WTFPL
 
+Option Strict On
+Option Explicit On
+
 Namespace Backend
     Public Interface IDownloadProvider
 
