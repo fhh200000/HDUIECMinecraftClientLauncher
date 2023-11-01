@@ -19,6 +19,7 @@ Class Application
         If CommonValues.DownloadProvider.PrepareDownloadEnvironment() <> ReturnStatus.Success Then
             Throw New IOException("Download Provider initialization failed!")
         End If
+        CommonValues.DecompressionProvider = New ZipDecompressionProvider
     End Sub
     ' Finalize components.
     Public Sub App_Exit(Sender As Object, e As ExitEventArgs)

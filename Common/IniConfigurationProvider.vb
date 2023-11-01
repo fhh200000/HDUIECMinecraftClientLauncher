@@ -42,9 +42,6 @@ Namespace Common
             Dim Temp As New StringBuilder(255)
             GetPrivateProfileString(SplitNames(0), SplitNames(1), "", Temp, 255, ConfigurationFilePath)
             Value = Temp.ToString
-            If Value.Length = 0 Then
-                Return ReturnStatus.InvalidConfigurationItem
-            End If
             Return ReturnStatus.Success
         End Function
 

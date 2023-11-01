@@ -31,15 +31,19 @@ Namespace Backend
         Function GetLatestVersionOfComponent(ComponentName As String, ByRef CurrentVersion As String) As ReturnStatus
 
         ' Start downloading process the specified component.
-        ' This is a blocking downloading process. Inside this function, an async process is assumed.
+        ' This is an async downloading process.
         ' @param    ComponentName           The name of specified component.
-        ' @param    ByRef DownloadPercent   The current download percent, may be updated by databinding.
-        ' @param    ByRef DownloadSize      The current download size, may be updated by databinding.
-        ' @param    ByRef TotalSize         The total download size, may be updated by databinding.
         ' @return   ReturnStatus.Success    when download environment is successfully finalized.
         ' @return   Other                   on failure.
-        Function StartDownloadingProcess(ComponentName As String, ByRef DownloadPercent As Double,
-                                         ByRef DownloadSize As Double, ByRef TotalSize As Long) As ReturnStatus
+        Function StartDownloadingProcessAsync(ComponentName As String) As Task(Of ReturnStatus)
+
+        ' Get the current download progress, and total size of it.
+        ' @param    ComponentName           The name of specified component.
+        ' @param    ByRef DownloadedSize    The downloaded size so far.
+        ' @param    ByRef TotalSize         The total size of current file.
+        ' @return   ReturnStatus.Success    when download environment is successfully finalized.
+        ' @return   Other                   on failure.
+        Function GetDownloadProgress(ComponentName As String, ByRef DownloadedSize As Long, ByRef TotalSize As Long) As ReturnStatus
 
     End Interface
 End Namespace

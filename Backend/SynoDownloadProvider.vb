@@ -8,6 +8,7 @@ Imports System.Net.Http
 Imports System.Web
 Imports System.Text.Json
 Imports System.Text.RegularExpressions
+Imports System.IO
 
 Namespace Backend
     Public Class SynoDownloadProvider
@@ -22,13 +23,16 @@ Namespace Backend
         Private Const LogoutUriTemplate As String =
             "{0}/webapi/entry.cgi?api=SYNO.API.Auth&version=6&method=logout"
 
+        Const BufferCache As Integer = 16384 '16K buffer size
+
         Private BaseUri As String
         Private Username As String
         Private Password As String
         Private RemoteDir As String
         Private ReadOnly Versions As New Dictionary(Of String, String)
         Private ReadOnly LiteralPaths As New Dictionary(Of String, String)
-        Private ReadOnly Sizes As New Dictionary(Of String, ULong)
+        Private ReadOnly Sizes As New Dictionary(Of String, Long)
+        Private ReadOnly DownloadedSizes As New Dictionary(Of String, Long)
 
         Private WebClient As HttpClient
 
@@ -105,7 +109,7 @@ Namespace Backend
                     If Mth.Groups("Name").Value.Length <> 0 Then
                         Versions.Add(Mth.Groups("Name").Value, Mth.Groups("Version").Value)
                         LiteralPaths.Add(Mth.Groups("Name").Value, Data.GetProperty("path").GetString())
-                        Sizes.Add(Mth.Groups("Name").Value, Data.GetProperty("additional").GetProperty("size").GetUInt64)
+                        Sizes.Add(Mth.Groups("Name").Value, Data.GetProperty("additional").GetProperty("size").GetInt64)
                     End If
                 Next
             End If
@@ -117,10 +121,45 @@ Namespace Backend
             Return ReturnStatus.Success
         End Function
 
-        Public Function StartDownloadingProcess(ComponentName As String, ByRef DownloadPercent As Double,
-                                                ByRef DownloadSize As Double, ByRef TotalSize As Long) As ReturnStatus _
-                                                Implements IDownloadProvider.StartDownloadingProcess
-            Throw New NotImplementedException()
+        Public Async Function StartDownloadingProcessAsync(ComponentName As String) As Task(Of ReturnStatus) _
+                                                            Implements IDownloadProvider.StartDownloadingProcessAsync
+            Dim Fs As FileStream
+            If Not Sizes.ContainsKey(ComponentName) Then
+                Return ReturnStatus.InvalidConfigurationItem
+            End If
+            Try
+                Fs = New FileStream(ComponentName, FileMode.Create, FileAccess.ReadWrite)
+            Catch
+                Return ReturnStatus.ReadonlyFileSystem
+            End Try
+            Dim ReadBuffer(BufferCache) As Byte
+            DownloadedSizes.Add(ComponentName, 0)
+            Dim Result = Await WebClient.GetAsync(String.Format(FileDownloadUriTemplate, BaseUri, HttpUtility.UrlEncode(LiteralPaths(ComponentName))), HttpCompletionOption.ResponseHeadersRead)
+            If Result.StatusCode <> 200 Then
+                Return ReturnStatus.NetworkError
+            End If
+            Dim ResultFileStream = Await Result.Content.ReadAsStreamAsync()
+FillBuffer:
+            Dim Size As Integer = Await ResultFileStream.ReadAsync(ReadBuffer, 0, BufferCache)
+            Fs.Write(ReadBuffer, 0, Size)
+            DownloadedSizes(ComponentName) += Size
+            If Size <> 0 Then
+                GoTo FillBuffer
+            End If
+            Fs.Flush()
+            Fs.Close()
+            Return ReturnStatus.Success
+
+        End Function
+
+        Public Function GetDownloadProgress(ComponentName As String, ByRef DownloadedSize As Long, ByRef TotalSize As Long) As ReturnStatus _
+                                            Implements IDownloadProvider.GetDownloadProgress
+            If Not Sizes.ContainsKey(ComponentName) Then
+                Return ReturnStatus.InvalidConfigurationItem
+            End If
+            DownloadedSize = DownloadedSizes(ComponentName)
+            TotalSize = Sizes(ComponentName)
+            Return ReturnStatus.Success
         End Function
     End Class
 End Namespace
