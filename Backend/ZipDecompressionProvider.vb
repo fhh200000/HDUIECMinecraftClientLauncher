@@ -23,7 +23,19 @@ Namespace Backend
                 End Try
             End If
             Try
-                ZipFile.ExtractToDirectory(FilePath, DestinationDir)
+                Dim Archive = ZipFile.OpenRead(FilePath)
+                For Each Entry As ZipArchiveEntry In Archive.Entries
+                    If Entry.FullName.EndsWith("/") Or Entry.FullName.EndsWith("\\") Then
+                        Dim EntryFullName As String = Entry.FullName.Replace("/"c, "\"c)
+                        Dim EntryFullpath As String = Path.Combine(DestinationDir, EntryFullName)
+                        If (Not Directory.Exists(EntryFullpath)) Then
+                            Directory.CreateDirectory(EntryFullpath)
+                        End If
+                    Else
+                        Dim EntryFullName As String = Entry.FullName.Replace("/"c, "\"c)
+                        Entry.ExtractToFile(Path.Combine(DestinationDir, EntryFullName), True)
+                    End If
+                Next
             Catch
                 Return ReturnStatus.GenericFailure
             End Try

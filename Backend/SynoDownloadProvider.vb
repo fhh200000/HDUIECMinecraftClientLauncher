@@ -110,6 +110,7 @@ Namespace Backend
                         Versions.Add(Mth.Groups("Name").Value, Mth.Groups("Version").Value)
                         LiteralPaths.Add(Mth.Groups("Name").Value, Data.GetProperty("path").GetString())
                         Sizes.Add(Mth.Groups("Name").Value, Data.GetProperty("additional").GetProperty("size").GetInt64)
+                        DownloadedSizes.Add(Mth.Groups("Name").Value, 0)
                     End If
                 Next
             End If
@@ -133,7 +134,6 @@ Namespace Backend
                 Return ReturnStatus.ReadonlyFileSystem
             End Try
             Dim ReadBuffer(BufferCache) As Byte
-            DownloadedSizes.Add(ComponentName, 0)
             Dim Result = Await WebClient.GetAsync(String.Format(FileDownloadUriTemplate, BaseUri, HttpUtility.UrlEncode(LiteralPaths(ComponentName))), HttpCompletionOption.ResponseHeadersRead)
             If Result.StatusCode <> 200 Then
                 Return ReturnStatus.NetworkError
