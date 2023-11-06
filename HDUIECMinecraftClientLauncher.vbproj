@@ -105,11 +105,17 @@
     </ApplicationDefinition>
     <Compile Include="Backend\IDecompressionProvider.vb" />
     <Compile Include="Backend\ZipDecompressionProvider.vb" />
+    <Compile Include="Common\RegistryConfigurationProvider.vb" />
     <Compile Include="Frontend\MainWindowViewModel.vb" />
     <Compile Include="Resources\ApplicationResources.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ApplicationResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\LocalizationString.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizationString.resx</DependentUpon>
     </Compile>
     <Page Include="Frontend\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -176,6 +182,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ApplicationResources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\LocalizationString.resx">
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizationString.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\LocalizationString.zh-Hans.resx" />
     <None Include="Common\DefaultIniConfiguration.ini">
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -184,7 +196,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

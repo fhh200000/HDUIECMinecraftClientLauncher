@@ -91,7 +91,7 @@ Namespace Frontend
             Dim DownloadedSize As Long, TotalSize As Long
             For Each I As String In CommonValues.GameComponents
                 If CommonValues.DownloadProvider.GetLatestVersionOfComponent(I, Version) = ReturnStatus.Success Then
-                    If CommonValues.ConfigurationProvider.GetConfiguration("ComponentVersion." + I, GotVersion) = ReturnStatus.Success Then
+                    If CommonValues.NormalConfigurationProvider.GetConfiguration("ComponentVersion." + I, GotVersion) = ReturnStatus.Success Then
                         CommonValues.DownloadProvider.GetDownloadProgress(I, DownloadedSize, TotalSize)
                         If GotVersion.Equals("") Then
                             GotVersion = "(N/A)"

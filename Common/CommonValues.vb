@@ -20,7 +20,8 @@ End Enum
 Public Class CommonValues
 
     Public Shared DownloadProvider As IDownloadProvider
-    Public Shared ConfigurationProvider As IConfigurationProvider
+    Public Shared NormalConfigurationProvider As IConfigurationProvider
+    Public Shared RegistryConfigurationProvider As IConfigurationProvider
     Public Shared DecompressionProvider As IDecompressionProvider
     Public Shared GameComponents() As String = {"Mod", "Base", "Config", "Launcher", "Shaderpack", "JavaRuntime", "MainComponent"}
 

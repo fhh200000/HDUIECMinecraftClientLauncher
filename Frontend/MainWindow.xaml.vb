@@ -1,8 +1,9 @@
-﻿' This file defines MainWindow interaction.
+﻿Option Explicit On
+Option Strict On
+' This file defines MainWindow interaction.
 ' SPDX-License-Identifier: WTFPL
 
-Option Explicit On
-Option Strict On
+Imports HDUIECMinecraftClientLauncher.My.Resources
 
 Namespace Frontend
 
@@ -14,7 +15,7 @@ Namespace Frontend
                                                                     Environment.CurrentDirectory + IO.Path.DirectorySeparatorChar,
                                                                     Backend.IDecompressionProvider.DecompressionMethod.OverwriteCurrentFiles) _
                                                                     = ReturnStatus.Success Then
-                    CommonValues.ConfigurationProvider.SetConfiguration("ComponentVersion." + Component, " " + Version)
+                    CommonValues.NormalConfigurationProvider.SetConfiguration("ComponentVersion." + Component, " " + Version)
                 Else
                 End If
             Else
@@ -26,13 +27,23 @@ Namespace Frontend
             Dim GotVersion As String = ""
             For Each I As String In CommonValues.GameComponents
                 If CommonValues.DownloadProvider.GetLatestVersionOfComponent(I, Version) = ReturnStatus.Success Then
-                    If CommonValues.ConfigurationProvider.GetConfiguration("ComponentVersion." + I, GotVersion) = ReturnStatus.Success Then
+                    If CommonValues.NormalConfigurationProvider.GetConfiguration("ComponentVersion." + I, GotVersion) = ReturnStatus.Success Then
                         If GotVersion <> Version Then
                             Await StartDownloadProcess(I, Version)
                         End If
                     End If
                 End If
             Next
+        End Sub
+
+        Private Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
+            Dim Value As String = ""
+            CommonValues.RegistryConfigurationProvider.GetConfiguration("UserInformation.Username", Value)
+            If Value.Equals("") Then
+                Username.Content = LocalizationString.ClickToLogin
+            Else
+                Username.Content = Value
+            End If
         End Sub
     End Class
 End Namespace

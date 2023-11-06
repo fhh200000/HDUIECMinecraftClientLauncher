@@ -6,6 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HDUIECMinecraftClientLauncher.Frontend"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
+        Loaded="Window_Loaded"
         mc:Ignorable="d"
         Title="MainWindow" Height="640" Width="1050" ResizeMode="CanMinimize">
     <!-- Databinding resource -->
@@ -42,6 +43,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Grid.Column="0" Margin="36,55,0,0" VerticalAlignment="Top" Height="153" Width="399" Click="Button_Click"/>
+            <Label x:Name="Username" Content="Username" Grid.Column="0"/>
             <ListBox Grid.Column="1" x:Name="DownloadList" ItemsSource="{Binding Source={StaticResource DownloadItems}, Path=DownloadItems }" ItemTemplate="{StaticResource DownloadItemsTemplate}">
                 <ListBox.Background>
                     <SolidColorBrush Color="White" Opacity="0.2"/>

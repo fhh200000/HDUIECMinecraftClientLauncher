@@ -39,15 +39,15 @@ Namespace Backend
         Public Function PrepareDownloadEnvironment() As ReturnStatus _
                                                     Implements IDownloadProvider.PrepareDownloadEnvironment
             Dim Status As ReturnStatus
-            Status = CommonValues.ConfigurationProvider.GetConfiguration("Synology.BaseUri", BaseUri)
+            Status = CommonValues.NormalConfigurationProvider.GetConfiguration("Synology.BaseUri", BaseUri)
             If Status <> ReturnStatus.Success Then
                 Return Status
             End If
-            Status = CommonValues.ConfigurationProvider.GetConfiguration("Synology.Username", Username)
+            Status = CommonValues.NormalConfigurationProvider.GetConfiguration("Synology.Username", Username)
             If Status <> ReturnStatus.Success Then
                 Return Status
             End If
-            Status = CommonValues.ConfigurationProvider.GetConfiguration("Synology.Password", Password)
+            Status = CommonValues.NormalConfigurationProvider.GetConfiguration("Synology.Password", Password)
             If Status <> ReturnStatus.Success Then
                 Return Status
             End If
@@ -90,7 +90,7 @@ Namespace Backend
             End If
             If Versions.Count = 0 Then
                 ' Refresh.
-                CommonValues.ConfigurationProvider.GetConfiguration("Synology.RemoteDir", RemoteDir)
+                CommonValues.NormalConfigurationProvider.GetConfiguration("Synology.RemoteDir", RemoteDir)
                 Dim Result = WebClient.GetAsync(String.Format(FileListUriTemplate, BaseUri, HttpUtility.UrlEncode(RemoteDir)))
                 Result.Wait()
                 If Result.Result.StatusCode <> 200 Then

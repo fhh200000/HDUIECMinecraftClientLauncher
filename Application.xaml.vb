@@ -11,10 +11,15 @@ Class Application
 
     ' Initialize components.
     Public Sub App_Startup(Sender As Object, e As StartupEventArgs)
-        CommonValues.ConfigurationProvider = New IniConfigurationProvider
-        If CommonValues.ConfigurationProvider.PrepareConfigurationEnvironment() <> ReturnStatus.Success Then
+        CommonValues.NormalConfigurationProvider = New IniConfigurationProvider
+        If CommonValues.NormalConfigurationProvider.PrepareConfigurationEnvironment() <> ReturnStatus.Success Then
             Throw New IOException("Configuration Provider initialization failed!")
         End If
+
+        ' TODO: Detect runtime OS information
+        ' On OSes without registry support, RegistryConfigurationProvider is the same as NormalConfigurationProvider.
+        CommonValues.RegistryConfigurationProvider = New RegistryConfigurationProvider
+
         CommonValues.DownloadProvider = New SynoDownloadProvider
         If CommonValues.DownloadProvider.PrepareDownloadEnvironment() <> ReturnStatus.Success Then
             Throw New IOException("Download Provider initialization failed!")
