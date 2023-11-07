@@ -5,21 +5,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HDUIECMinecraftClientLauncher.Frontend"
+        xmlns:res="clr-namespace:HDUIECMinecraftClientLauncher.My.Resources"
         d:DataContext="{d:DesignInstance Type=local:MainWindowViewModel}"
         Loaded="Window_Loaded"
         mc:Ignorable="d"
         Title="MainWindow" Height="640" Width="1050" ResizeMode="CanMinimize">
+    <!-- Databinding context-->
+
     <!-- Databinding resource -->
     <Window.Resources>
         <DataTemplate x:Key="DownloadItemsTemplate">
-            <Grid>
+            <Grid HorizontalAlignment="Stretch">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Label Grid.Row="0" Grid.Column="0" Content="{Binding Path=ComponentName}"/>
@@ -32,18 +35,22 @@
         <local:MainWindowViewModel x:Key="DownloadItems"/>
     </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="247*"/>
-            <ColumnDefinition Width="1033*"/>
-        </Grid.ColumnDefinitions>
-        <Image x:Name="image" HorizontalAlignment="Left" Stretch="Fill" VerticalAlignment="Center" Source="/Resources/background.png" Grid.ColumnSpan="2"/>
+        <Image x:Name="image" HorizontalAlignment="Left" Stretch="Fill" VerticalAlignment="Center" Source="pack://application:,,,/Resources/background.png" Grid.ColumnSpan="2"/>
         <Grid Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition />
+                <ColumnDefinition Width="250"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Grid.Column="0" Margin="36,55,0,0" VerticalAlignment="Top" Height="153" Width="399" Click="Button_Click"/>
-            <Label x:Name="Username" Content="Username" Grid.Column="0"/>
+            <Grid Grid.Column="0" Background="#99FFFFFF">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Button x:Name="button" Content="{x:Static res:LocalizationString.StartGame}" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Click="Button_Click" MinHeight="36" MinWidth="150" Margin="0,48,0,0" FontSize="16" />
+                <Label x:Name="Username" Content="{x:Static res:LocalizationString.ClickToLogin}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Margin="0,16,0,0"/>
+                <Image x:Name="Avatar" Height="128" Width="128" Grid.Row="0" Source="pack://application:,,,/Resources/defaultavatar.png"/>
+            </Grid>
             <ListBox Grid.Column="1" x:Name="DownloadList" ItemsSource="{Binding Source={StaticResource DownloadItems}, Path=DownloadItems }" ItemTemplate="{StaticResource DownloadItemsTemplate}">
                 <ListBox.Background>
                     <SolidColorBrush Color="White" Opacity="0.2"/>

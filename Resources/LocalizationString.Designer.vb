@@ -25,7 +25,7 @@ Namespace My.Resources
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
-    Friend Class LocalizationString
+    Public Class LocalizationString
         
         Private Shared resourceMan As Global.System.Resources.ResourceManager
         
@@ -40,7 +40,7 @@ Namespace My.Resources
         '''  返回此类使用的缓存的 ResourceManager 实例。
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
+        Public Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
                     Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("HDUIECMinecraftClientLauncher.LocalizationString", GetType(LocalizationString).Assembly)
@@ -55,7 +55,7 @@ Namespace My.Resources
         '''  使用此强类型资源类的所有资源查找执行重写。
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Shared Property Culture() As Global.System.Globalization.CultureInfo
+        Public Shared Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
@@ -67,9 +67,18 @@ Namespace My.Resources
         '''<summary>
         '''  查找类似 Chick to login 的本地化字符串。
         '''</summary>
-        Friend Shared ReadOnly Property ClickToLogin() As String
+        Public Shared ReadOnly Property ClickToLogin() As String
             Get
                 Return ResourceManager.GetString("ClickToLogin", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找类似 MC, launch! 的本地化字符串。
+        '''</summary>
+        Public Shared ReadOnly Property StartGame() As String
+            Get
+                Return ResourceManager.GetString("StartGame", resourceCulture)
             End Get
         End Property
     End Class

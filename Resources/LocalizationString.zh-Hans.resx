@@ -121,4 +121,7 @@
     <value>点鸡登录</value>
     <comment>故意不小心的</comment>
   </data>
+  <data name="StartGame" xml:space="preserve">
+    <value>MC，启动！</value>
+  </data>
 </root>

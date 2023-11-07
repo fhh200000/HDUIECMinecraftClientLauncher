@@ -25,7 +25,7 @@ Namespace My.Resources
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0"),  _
      Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.Runtime.CompilerServices.CompilerGeneratedAttribute()>  _
-    Friend Class ApplicationResources
+    Public Class ApplicationResources
         
         Private Shared resourceMan As Global.System.Resources.ResourceManager
         
@@ -40,7 +40,7 @@ Namespace My.Resources
         '''  返回此类使用的缓存的 ResourceManager 实例。
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
+        Public Shared ReadOnly Property ResourceManager() As Global.System.Resources.ResourceManager
             Get
                 If Object.ReferenceEquals(resourceMan, Nothing) Then
                     Dim temp As Global.System.Resources.ResourceManager = New Global.System.Resources.ResourceManager("HDUIECMinecraftClientLauncher.ApplicationResources", GetType(ApplicationResources).Assembly)
@@ -55,7 +55,7 @@ Namespace My.Resources
         '''  使用此强类型资源类的所有资源查找执行重写。
         '''</summary>
         <Global.System.ComponentModel.EditorBrowsableAttribute(Global.System.ComponentModel.EditorBrowsableState.Advanced)>  _
-        Friend Shared Property Culture() As Global.System.Globalization.CultureInfo
+        Public Shared Property Culture() As Global.System.Globalization.CultureInfo
             Get
                 Return resourceCulture
             End Get
@@ -67,9 +67,19 @@ Namespace My.Resources
         '''<summary>
         '''  查找 System.Drawing.Bitmap 类型的本地化资源。
         '''</summary>
-        Friend Shared ReadOnly Property background() As System.Drawing.Bitmap
+        Public Shared ReadOnly Property background() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("background", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找 System.Drawing.Bitmap 类型的本地化资源。
+        '''</summary>
+        Public Shared ReadOnly Property defaultavatar() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("defaultavatar", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -79,19 +89,22 @@ Namespace My.Resources
         '''# SPDX-License-Identifier: WTFPL
         '''
         '''[Synology]
-        '''BaseUri  = http://127.0.0.1:1234
-        '''Username = Its a me mario
-        '''Password = Oh my vulcano sister
+        '''BaseUri   = http://127.0.0.1:1234
+        '''Username  = Its a me mario
+        '''Password  = Oh my vulcano sister
+        '''RemoteDir = /Minecraft
         '''
         '''[ComponentVersion]
-        '''Launcher		=
-        '''JavaRuntime		=
-        '''MainComponent	=
-        '''Mod 			=
-        '''Shaderpack 		=
+        '''Mod =
+        '''Base =
+        '''Config =
+        '''Launcher =
+        '''Shaderpack =
+        '''JavaRuntime =
+        '''MainComponent =
         ''' 的本地化字符串。
         '''</summary>
-        Friend Shared ReadOnly Property DefaultIniConfiguration() As String
+        Public Shared ReadOnly Property DefaultIniConfiguration() As String
             Get
                 Return ResourceManager.GetString("DefaultIniConfiguration", resourceCulture)
             End Get

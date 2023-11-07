@@ -121,4 +121,7 @@
     <value>Chick to login</value>
     <comment>Meant to be careless</comment>
   </data>
+  <data name="StartGame" xml:space="preserve">
+    <value>MC, launch!</value>
+  </data>
 </root>
