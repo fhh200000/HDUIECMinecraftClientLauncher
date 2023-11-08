@@ -15,21 +15,20 @@
     <!-- Databinding resource -->
     <Window.Resources>
         <DataTemplate x:Key="DownloadItemsTemplate">
-            <Grid HorizontalAlignment="Stretch">
+            <Grid HorizontalAlignment="Stretch" Height="64">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Content="{Binding Path=ComponentName}"/>
-                <Label Grid.Row="0" Grid.Column="1" Content="{Binding Path=VersionString}"/>
-                <Label Grid.Row="0" Grid.Column="2" Content="{Binding Path=DownloadedRatio}"/>
-                <Label Grid.Row="1" Grid.Column="2" Content="{Binding Path=DownloadedSize}"/>
-                <ProgressBar Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding Path=DownloadedRatio}" Maximum="100"/>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" HorizontalAlignment="Left" FontSize="16" Content="{Binding Path=ComponentName}"/>
+                    <Label Grid.Column="1" HorizontalAlignment="Left" FontSize="16" Content="{Binding Path=VersionString}"/>
+                </Grid>
+                <ProgressBar HorizontalAlignment="Stretch" Grid.Row="1" Value="{Binding Path=DownloadedRatio}" Height="3"  Maximum="100"/>
             </Grid>
         </DataTemplate>
         <local:MainWindowViewModel x:Key="DownloadItems"/>
@@ -51,7 +50,7 @@
                 <Label x:Name="Username" Content="{x:Static res:LocalizationString.ClickToLogin}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Margin="0,16,0,0"/>
                 <Image x:Name="Avatar" Height="128" Width="128" Grid.Row="0" Source="pack://application:,,,/Resources/defaultavatar.png"/>
             </Grid>
-            <ListBox Grid.Column="1" x:Name="DownloadList" ItemsSource="{Binding Source={StaticResource DownloadItems}, Path=DownloadItems }" ItemTemplate="{StaticResource DownloadItemsTemplate}">
+            <ListBox Grid.Column="1" x:Name="DownloadList" ItemsSource="{Binding Source={StaticResource DownloadItems}, Path=DownloadItems }" ItemTemplate="{StaticResource DownloadItemsTemplate}"  HorizontalContentAlignment="Stretch">
                 <ListBox.Background>
                     <SolidColorBrush Color="White" Opacity="0.2"/>
                 </ListBox.Background>
