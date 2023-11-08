@@ -10,7 +10,6 @@
         Loaded="Window_Loaded"
         mc:Ignorable="d"
         Title="MainWindow" Height="640" Width="1050" ResizeMode="CanMinimize">
-    <!-- Databinding context-->
 
     <!-- Databinding resource -->
     <Window.Resources>
@@ -31,7 +30,6 @@
                 <ProgressBar HorizontalAlignment="Stretch" Grid.Row="1" Value="{Binding Path=DownloadedRatio}" Height="3"  Maximum="100"/>
             </Grid>
         </DataTemplate>
-        <local:MainWindowViewModel x:Key="DownloadItems"/>
     </Window.Resources>
     <Grid>
         <Image x:Name="image" HorizontalAlignment="Left" Stretch="Fill" VerticalAlignment="Center" Source="pack://application:,,,/Resources/background.png" Grid.ColumnSpan="2"/>
@@ -46,16 +44,66 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Button x:Name="button" Content="{x:Static res:LocalizationString.StartGame}" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Click="Button_Click" MinHeight="36" MinWidth="150" Margin="0,48,0,0" FontSize="16" />
+                <Button x:Name="button" Content="{x:Static res:LocalizationString.StartGame}" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Top" Click="StartGame" MinHeight="36" MinWidth="150" Margin="0,48,0,0" FontSize="16" />
                 <Label x:Name="Username" Content="{x:Static res:LocalizationString.ClickToLogin}" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" Margin="0,16,0,0"/>
-                <Image x:Name="Avatar" Height="128" Width="128" Grid.Row="0" Source="pack://application:,,,/Resources/defaultavatar.png"/>
+                <Button Height="128" Width="128" Grid.Row="0" Background="{x:Null}" Click="ShowLoginDialog">
+                    <Image x:Name="Avatar" Source="pack://application:,,,/Resources/defaultavatar.png" />
+                </Button>
             </Grid>
-            <ListBox Grid.Column="1" x:Name="DownloadList" ItemsSource="{Binding Source={StaticResource DownloadItems}, Path=DownloadItems }" ItemTemplate="{StaticResource DownloadItemsTemplate}"  HorizontalContentAlignment="Stretch">
+            <ListBox Grid.Column="1" x:Name="DownloadList" ItemsSource="{Binding Path=DownloadItems }" ItemTemplate="{StaticResource DownloadItemsTemplate}"  HorizontalContentAlignment="Stretch">
                 <ListBox.Background>
                     <SolidColorBrush Color="White" Opacity="0.2"/>
                 </ListBox.Background>
             </ListBox>
         </Grid>
+        <Border Background="#90000000" x:Name="LoginPrompt" Visibility="Hidden" MouseUp="CancelLogin">
+            <Border BorderBrush="Black" BorderThickness="1" Background="#99FFFFFF" 
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center">
+                <Border.BitmapEffect>
+                    <DropShadowBitmapEffect Color="Black" 
+                  Opacity="0.5" Direction="270" 
+                  ShadowDepth="0.7" />
+                </Border.BitmapEffect>
+                <Grid Margin="30 20 30 20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" x:Name="MessageTextBlock" 
+                    Text="{x:Static res:LocalizationString.LoginPrompt}"
+                    TextWrapping="Wrap" Margin="5 5 5 15" FontSize="24" />
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static res:LocalizationString.Username}" Padding="3 0" Margin="3" FontSize="16"/>
+                        <TextBox  Grid.Row="0" Grid.Column="1" Margin="3" Width="150" FontSize="16"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static res:LocalizationString.Password}" Padding="3 0" Margin="3" FontSize="16"/>
+                        <TextBox  Grid.Row="1" Grid.Column="1" Margin="3" Width="150" FontSize="16"/>
+                    </Grid>
+                    
+                    <Grid Grid.Row="2" Margin="5" 
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Bottom">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="PerformLoginButton" Grid.Column="0" Click="PerformLogin"
+                          Content="{x:Static res:LocalizationString.Affirmative}" Padding="10 5 10 5" Margin="0 10 5 0" FontSize="16" />
+                        <Button x:Name="CancelLoginButton"  Grid.Column="1" Click="CancelLogin"
+                          Content="{x:Static res:LocalizationString.Negative}"  Padding="10 5 10 5"  Margin="5 10 0 0" FontSize="16"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Border>
     </Grid>
-
 </Window>

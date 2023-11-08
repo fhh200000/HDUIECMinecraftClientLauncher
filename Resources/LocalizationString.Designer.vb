@@ -65,6 +65,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  查找类似 Aye! 的本地化字符串。
+        '''</summary>
+        Public Shared ReadOnly Property Affirmative() As String
+            Get
+                Return ResourceManager.GetString("Affirmative", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  查找类似 Chick to login 的本地化字符串。
         '''</summary>
         Public Shared ReadOnly Property ClickToLogin() As String
@@ -74,11 +83,47 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  查找类似 Thou Art...? 的本地化字符串。
+        '''</summary>
+        Public Shared ReadOnly Property LoginPrompt() As String
+            Get
+                Return ResourceManager.GetString("LoginPrompt", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找类似 Nein! 的本地化字符串。
+        '''</summary>
+        Public Shared ReadOnly Property Negative() As String
+            Get
+                Return ResourceManager.GetString("Negative", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找类似 Password 的本地化字符串。
+        '''</summary>
+        Public Shared ReadOnly Property Password() As String
+            Get
+                Return ResourceManager.GetString("Password", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  查找类似 MC, launch! 的本地化字符串。
         '''</summary>
         Public Shared ReadOnly Property StartGame() As String
             Get
                 Return ResourceManager.GetString("StartGame", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找类似 User Name 的本地化字符串。
+        '''</summary>
+        Public Shared ReadOnly Property Username() As String
+            Get
+                Return ResourceManager.GetString("Username", resourceCulture)
             End Get
         End Property
     End Class

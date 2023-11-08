@@ -36,7 +36,16 @@ Namespace Frontend
             End Get
         End Property
 
+        Private _VersionString As String
         Public Property VersionString As String
+            Get
+                Return _VersionString
+            End Get
+            Set(value As String)
+                _VersionString = value
+                OnPropertyChanged("VersionString")
+            End Set
+        End Property
 
         Public Property TotalSize As Long
 
@@ -81,6 +90,9 @@ Namespace Frontend
                     CommonValues.DownloadProvider.GetDownloadProgress(I.ComponentName, DownloadedSize, TotalSize)
                     I.DownloadedSize = DownloadedSize
                     I.DownloadedRatio = I.DownloadedSize / I.TotalSize * 100
+                    If DownloadedSize = TotalSize Then
+                        I.Status = DownloadStatus.Finished
+                    End If
                 End If
             Next
         End Sub

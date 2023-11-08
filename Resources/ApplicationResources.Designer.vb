@@ -65,26 +65,6 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  查找 System.Drawing.Bitmap 类型的本地化资源。
-        '''</summary>
-        Public Shared ReadOnly Property background() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("background", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
-        '''  查找 System.Drawing.Bitmap 类型的本地化资源。
-        '''</summary>
-        Public Shared ReadOnly Property defaultavatar() As System.Drawing.Bitmap
-            Get
-                Dim obj As Object = ResourceManager.GetObject("defaultavatar", resourceCulture)
-                Return CType(obj,System.Drawing.Bitmap)
-            End Get
-        End Property
-        
-        '''<summary>
         '''  查找类似 # Configuration of HDUIEC Minecraft Client Launcher.
         '''# SPDX-License-Identifier: WTFPL
         '''

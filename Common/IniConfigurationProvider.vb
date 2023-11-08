@@ -49,6 +49,7 @@ Namespace Common
                                             Implements IConfigurationProvider.SetConfiguration
             Dim SplitNames() As String = ConfigurationName.Split("."c)
             If WritePrivateProfileString(SplitNames(0), SplitNames(1), Value, ConfigurationFilePath) = 0 Then
+                WritePrivateProfileString(Nothing, Nothing, Nothing, ConfigurationFilePath)
                 Return ReturnStatus.InvalidConfigurationItem
             End If
             Return ReturnStatus.Success

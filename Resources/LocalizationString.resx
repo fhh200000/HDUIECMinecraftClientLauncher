@@ -117,11 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Affirmative" xml:space="preserve">
+    <value>Aye!</value>
+  </data>
   <data name="ClickToLogin" xml:space="preserve">
     <value>Chick to login</value>
     <comment>Meant to be careless</comment>
   </data>
+  <data name="LoginPrompt" xml:space="preserve">
+    <value>Thou Art...?</value>
+  </data>
+  <data name="Negative" xml:space="preserve">
+    <value>Nein!</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="StartGame" xml:space="preserve">
     <value>MC, launch!</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>User Name</value>
   </data>
 </root>

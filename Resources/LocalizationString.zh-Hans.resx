@@ -117,11 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Affirmative" xml:space="preserve">
+    <value>好耶！</value>
+  </data>
   <data name="ClickToLogin" xml:space="preserve">
     <value>点鸡登录</value>
     <comment>故意不小心的</comment>
   </data>
+  <data name="LoginPrompt" xml:space="preserve">
+    <value>旅行者，你的名字是？</value>
+  </data>
+  <data name="Negative" xml:space="preserve">
+    <value>坏耶！</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>密码</value>
+  </data>
   <data name="StartGame" xml:space="preserve">
     <value>MC，启动！</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>用户名</value>
   </data>
 </root>

@@ -36,6 +36,7 @@ Namespace Backend
                         Entry.ExtractToFile(Path.Combine(DestinationDir, EntryFullName), True)
                     End If
                 Next
+                Archive.Dispose()
             Catch
                 Return ReturnStatus.GenericFailure
             End Try
