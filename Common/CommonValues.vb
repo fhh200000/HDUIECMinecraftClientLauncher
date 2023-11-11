@@ -15,6 +15,7 @@ Public Enum ReturnStatus
     NetworkError
     ReadonlyFileSystem
     InvalidConfigurationItem
+    InvaildPassword
 End Enum
 
 Public Class CommonValues
@@ -23,6 +24,7 @@ Public Class CommonValues
     Public Shared NormalConfigurationProvider As IConfigurationProvider
     Public Shared RegistryConfigurationProvider As IConfigurationProvider
     Public Shared DecompressionProvider As IDecompressionProvider
+    Public Shared LoginProvider As ILoginProvider
     Public Shared GameComponents() As String = {"Mod", "Base", "Config", "Launcher", "Shaderpack", "JavaRuntime", "MainComponent"}
 
 End Class

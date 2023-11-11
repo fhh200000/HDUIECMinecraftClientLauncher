@@ -4,6 +4,8 @@ Option Strict On
 ' SPDX-License-Identifier: WTFPL
 
 Imports System.IO
+Imports HDUIECMinecraftClientLauncher.Backend
+Imports HDUIECMinecraftClientLauncher.Common
 Imports HDUIECMinecraftClientLauncher.My.Resources
 
 Namespace Frontend
@@ -30,7 +32,7 @@ Namespace Frontend
         End Function
 
         Private Sub StartGame(sender As Object, e As RoutedEventArgs)
-
+            GameLauncher.LaunchGame()
         End Sub
         Public Sub New()
             ' This call is required by the designer.
@@ -38,10 +40,45 @@ Namespace Frontend
             ' Add any initialization after the InitializeComponent() call.
             DataContext = New MainWindowViewModel()
         End Sub
+        Private Async Function UpdateAvatar() As Task
+            Dim SkinUri As String = ""
+            Dim SkinType As SkinType = SkinType.Steve
+            Dim PlayerId As String = ""
+            CommonValues.RegistryConfigurationProvider.GetConfiguration("UserInformation.UserId", PlayerId)
+            Dim Status = CommonValues.LoginProvider.GetPlayerSkinInformation(PlayerId, SkinUri, SkinType)
+            If Status = ReturnStatus.Success Then
+                Status = Await AvatarGenerator.DownloadAndGenerateAvatar(SkinUri)
+                If Status = ReturnStatus.Success Then
+                    Dim AvatarImage As New BitmapImage
+                    AvatarImage.BeginInit()
+                    AvatarImage.CacheOption = BitmapCacheOption.OnLoad
+                    AvatarImage.UriSource = New Uri(Environment.CurrentDirectory + Path.DirectorySeparatorChar + AvatarGenerator.AvatarFileName, UriKind.Absolute)
+                    AvatarImage.EndInit()
+                    Avatar.Source = AvatarImage
+                End If
+            End If
+        End Function
         Private Async Sub Window_Loaded(sender As Object, e As RoutedEventArgs)
+            Dim ClientToken As String = ""
+            Dim AccessToken As String = ""
+            CommonValues.RegistryConfigurationProvider.GetConfiguration("Login.ClientToken", ClientToken)
+            CommonValues.RegistryConfigurationProvider.GetConfiguration("Login.AccessToken", AccessToken)
+            If (Not ClientToken.Equals("")) And (Not AccessToken.Equals("")) Then
+                Dim Result = CommonValues.LoginProvider.PreformRefresh(AccessToken, ClientToken)
+                If Result = ReturnStatus.Success Then
+                    CommonValues.RegistryConfigurationProvider.SetConfiguration("Login.AccessToken", AccessToken)
+                    If File.Exists(Environment.CurrentDirectory + Path.DirectorySeparatorChar + AvatarGenerator.AvatarFileName) Then
+                        Avatar.Source = New BitmapImage(New Uri(Environment.CurrentDirectory + Path.DirectorySeparatorChar + AvatarGenerator.AvatarFileName, UriKind.Absolute))
+                    Else
+                        Await UpdateAvatar()
+                    End If
+                Else
+                    CommonValues.RegistryConfigurationProvider.SetConfiguration("UserInformation.Username", "")
+                End If
+            End If
             Dim Value As String = ""
             CommonValues.RegistryConfigurationProvider.GetConfiguration("UserInformation.Username", Value)
-            If Value.Equals("") Then
+            If Value = Nothing Or "".Equals(Value) Then
                 Username.Content = LocalizationString.ClickToLogin
             Else
                 Username.Content = Value
@@ -57,10 +94,29 @@ Namespace Frontend
                     End If
                 End If
             Next
+            StartButton.IsEnabled = True
         End Sub
 
-        Private Sub PerformLogin(sender As Object, e As RoutedEventArgs)
-
+        Private Async Sub PerformLogin(sender As Object, e As RoutedEventArgs)
+            Dim ClientToken As String = ""
+            Dim AccessToken As String = ""
+            Dim PlayerId As String = ""
+            Dim PlayerName As String = ""
+            CommonValues.RegistryConfigurationProvider.GetConfiguration("Login.ClientToken", ClientToken)
+            If ClientToken = "" Then
+                ClientToken = Guid.NewGuid().ToString
+            End If
+            CommonValues.RegistryConfigurationProvider.SetConfiguration("Login.ClientToken", ClientToken)
+            Dim Status = CommonValues.LoginProvider.PerformLogin(UserNameInput.Text, PasswordInput.Password, AccessToken,
+                                                                    ClientToken, PlayerName, PlayerId)
+            If Status = ReturnStatus.Success Then
+                CommonValues.RegistryConfigurationProvider.SetConfiguration("UserInformation.Username", PlayerName)
+                CommonValues.RegistryConfigurationProvider.SetConfiguration("UserInformation.UserId", PlayerId)
+                CommonValues.RegistryConfigurationProvider.SetConfiguration("Login.AccessToken", AccessToken)
+                Username.Content = PlayerName
+                LoginPrompt.Visibility = Visibility.Hidden
+            End If
+            Await UpdateAvatar()
         End Sub
 
         Private Sub CancelLogin(sender As Object, e As RoutedEventArgs)

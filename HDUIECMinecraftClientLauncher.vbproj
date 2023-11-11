@@ -95,6 +95,8 @@
     <Compile Include="Backend\ILoginProvider.vb" />
     <Compile Include="Backend\YggdrasilLoginProvider.vb" />
     <Compile Include="Backend\ZipDecompressionProvider.vb" />
+    <Compile Include="Common\AvatarGenerator.vb" />
+    <Compile Include="Backend\GameLauncher.vb" />
     <Compile Include="Common\RegistryConfigurationProvider.vb" />
     <Compile Include="Frontend\MainWindowViewModel.vb" />
     <Compile Include="Resources\ApplicationResources.Designer.vb">

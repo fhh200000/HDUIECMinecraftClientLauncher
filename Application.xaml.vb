@@ -25,6 +25,7 @@ Class Application
             Throw New IOException("Download Provider initialization failed!")
         End If
         CommonValues.DecompressionProvider = New ZipDecompressionProvider
+        CommonValues.LoginProvider = New YggdrasilLoginProvider
     End Sub
     ' Finalize components.
     Public Sub App_Exit(Sender As Object, e As ExitEventArgs)

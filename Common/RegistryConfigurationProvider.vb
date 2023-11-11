@@ -10,7 +10,7 @@ Namespace Common
     Public Class RegistryConfigurationProvider
         Implements IConfigurationProvider
 
-        Private Shared ReadOnly RegistryPrefix As String = "HKEY_CURRENT_USER\SOFTWARE\HDUIECMinecraftClientLauncher"
+        Private Const RegistryPrefix As String = "HKEY_CURRENT_USER\SOFTWARE\HDUIECMinecraftClientLauncher"
 
         Public Function PrepareConfigurationEnvironment() As ReturnStatus Implements IConfigurationProvider.PrepareConfigurationEnvironment
             ' Registry doesn't to be prepared.
