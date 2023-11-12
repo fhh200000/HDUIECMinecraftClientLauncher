@@ -49,11 +49,13 @@ Namespace Frontend
             If Status = ReturnStatus.Success Then
                 Status = Await AvatarGenerator.DownloadAndGenerateAvatar(SkinUri)
                 If Status = ReturnStatus.Success Then
+                    Dim AvatarStream As New MemoryStream(File.ReadAllBytes(Environment.CurrentDirectory + Path.DirectorySeparatorChar + AvatarGenerator.AvatarFileName))
                     Dim AvatarImage As New BitmapImage
                     AvatarImage.BeginInit()
                     AvatarImage.CacheOption = BitmapCacheOption.OnLoad
-                    AvatarImage.UriSource = New Uri(Environment.CurrentDirectory + Path.DirectorySeparatorChar + AvatarGenerator.AvatarFileName, UriKind.Absolute)
+                    AvatarImage.StreamSource = AvatarStream
                     AvatarImage.EndInit()
+                    AvatarImage.Freeze()
                     Avatar.Source = AvatarImage
                 End If
             End If
@@ -68,7 +70,14 @@ Namespace Frontend
                 If Result = ReturnStatus.Success Then
                     CommonValues.RegistryConfigurationProvider.SetConfiguration("Login.AccessToken", AccessToken)
                     If File.Exists(Environment.CurrentDirectory + Path.DirectorySeparatorChar + AvatarGenerator.AvatarFileName) Then
-                        Avatar.Source = New BitmapImage(New Uri(Environment.CurrentDirectory + Path.DirectorySeparatorChar + AvatarGenerator.AvatarFileName, UriKind.Absolute))
+                        Dim AvatarStream As New MemoryStream(File.ReadAllBytes(Environment.CurrentDirectory + Path.DirectorySeparatorChar + AvatarGenerator.AvatarFileName))
+                        Dim AvatarImage As New BitmapImage
+                        AvatarImage.BeginInit()
+                        AvatarImage.CacheOption = BitmapCacheOption.OnLoad
+                        AvatarImage.StreamSource = AvatarStream
+                        AvatarImage.EndInit()
+                        AvatarImage.Freeze()
+                        Avatar.Source = AvatarImage
                     Else
                         Await UpdateAvatar()
                     End If
