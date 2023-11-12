@@ -19,7 +19,7 @@ Namespace Common
 
         Public Function GetConfiguration(ConfigurationName As String, ByRef Value As String) As ReturnStatus Implements IConfigurationProvider.GetConfiguration
             Dim SplitNames() As String = ConfigurationName.Split("."c)
-            Value = CStr(Registry.GetValue(RegistryPrefix + "\" + SplitNames(0), SplitNames(1), ""))
+            Value = Convert.ToString(Registry.GetValue(RegistryPrefix + "\" + SplitNames(0), SplitNames(1), ""))
             Return ReturnStatus.Success
         End Function
 
