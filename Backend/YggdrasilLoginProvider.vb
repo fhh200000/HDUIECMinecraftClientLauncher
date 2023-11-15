@@ -105,10 +105,15 @@ Namespace Backend
                         Dim DecodedInfo = JsonDocument.Parse(Encoding.Default.GetString(Convert.FromBase64String(I.GetProperty("value").ToString())))
                         Dim SkinNode As JsonElement = DecodedInfo.RootElement.GetProperty("textures").GetProperty("SKIN")
                         CharacterSkinUri = SkinNode.GetProperty("url").ToString()
-                        If "slim".Equals(SkinNode.GetProperty("metadata").GetProperty("model").ToString()) Then
-                            CharacterSkinType = SkinType.Alex
-                        Else
-                            CharacterSkinType = SkinType.Steve
+                        Dim JsonNodeTry As JsonElement
+                        If SkinNode.TryGetProperty("metadata", JsonNodeTry) Then
+                            If SkinNode.TryGetProperty("model", JsonNodeTry) Then
+                                If "slim".Equals(JsonNodeTry.ToString()) Then
+                                    CharacterSkinType = SkinType.Alex
+                                Else
+                                    CharacterSkinType = SkinType.Steve
+                                End If
+                            End If
                         End If
                         GoTo Processed
                     End If

@@ -17,10 +17,6 @@ Namespace Common
 
         Private Shared ReadOnly WebClient As New HttpClient
 
-        Const HeadOffsetX As Integer = 8
-        Const HeadOffsetY As Integer = 8
-        Const HeadSizeX As Integer = 8
-        Const HeadSizeY As Integer = 8
         Public Const AvatarFileName As String = "Avatar.png"
 
         ' Downloads and generates avatar file.
@@ -30,15 +26,30 @@ Namespace Common
         ' @return   Other                   on failure.
 
         Public Shared Async Function DownloadAndGenerateAvatar(Uri As String) As Task(Of ReturnStatus)
+            Dim HeadSizeX As Integer
+            Dim HeadSizeY As Integer
             ' Step 1: download.
             Dim AvatarStream = Await WebClient.GetAsync(Uri, HttpCompletionOption.ResponseHeadersRead).Result.Content.ReadAsStreamAsync()
-            ' Step 2: 16x upscaling 8px -> 128px, integer scaling.
+            ' Step 1.5: calculate skin block size.
             Dim Img = New Bitmap(AvatarStream)
+            Do While HeadSizeX < Img.Width
+                If Not Img.GetPixel(HeadSizeX, 0).ToArgb = 0 Then
+                    Exit Do
+                End If
+                HeadSizeX += 1
+            Loop
+            Do While HeadSizeY < Img.Height
+                If Not Img.GetPixel(0, HeadSizeY).ToArgb = 0 Then
+                    Exit Do
+                End If
+                HeadSizeY += 1
+            Loop
+            ' Step 2: 16x upscaling 8px -> 128px, integer scaling.
             Dim Img128x = New Bitmap(128, 128)
             Dim PixelColor As Color
             For I = 0 To HeadSizeY - 1
                 For J = 0 To HeadSizeX - 1
-                    PixelColor = Img.GetPixel(I + HeadOffsetX, J + HeadOffsetY)
+                    PixelColor = Img.GetPixel(I + HeadSizeX, J + HeadSizeY)
                     For K = 0 To (128 \ HeadSizeY) - 1
                         For L = 0 To (128 \ HeadSizeX) - 1
                             Img128x.SetPixel(I * (128 \ HeadSizeX) + L, J * (128 \ HeadSizeY) + K, PixelColor)
