@@ -32,6 +32,7 @@ Namespace Backend
         ""accessToken"":""{0}"",
         ""clientToken"":""{1}"",
         ""requestUser"":true
+        {2} 
     }}"
         Private Const SkinUri As String = "{0}/sessionserver/session/minecraft/profile/{1}?unsigned=true"
 
@@ -52,8 +53,20 @@ Namespace Backend
                 AccessToken = Result.RootElement.GetProperty("accessToken").ToString()
                 Dim PlayerInfo As JsonElement
                 If Not Result.RootElement.TryGetProperty("selectedProfile", PlayerInfo) Then
+                    ' Try to bind character name.
+                    Dim AvailableProfiles = Result.RootElement.GetProperty("availableProfiles")
+                    For Each I As JsonElement In AvailableProfiles.EnumerateArray
+                        If I.GetProperty("name").ToString.Equals(Username) Then
+                            PlayerInfo = I
+                            If PreformRefresh(AccessToken, ClientToken, PlayerInfo.GetProperty("id").ToString(),
+                                              PlayerInfo.GetProperty("name").ToString()) = ReturnStatus.Success Then
+                                GoTo SetPlayerInfo
+                            End If
+                        End If
+                    Next
                     Return ReturnStatus.NoCharacter
                 End If
+SetPlayerInfo:
                 PlayerId = PlayerInfo.GetProperty("id").ToString()
                 PlayerName = PlayerInfo.GetProperty("name").ToString()
                 Return ReturnStatus.Success
@@ -63,10 +76,16 @@ Namespace Backend
             Return ReturnStatus.NetworkError
         End Function
 
-        Public Function PreformRefresh(ByRef AccessToken As String, ByRef ClientToken As String) As ReturnStatus _
+        Public Function PreformRefresh(ByRef AccessToken As String, ByRef ClientToken As String,
+                                       Optional UserId As String = "", Optional Username As String = "") As ReturnStatus _
                                     Implements ILoginProvider.PreformRefresh
+            Dim CharacterSelectStr = String.Format(",""selectedProfile"":{{""id"": ""{0}"",""name"": ""{1}""}}", UserId, Username)
+            If UserId.Equals("") Or Username.Equals("") Then
+                CharacterSelectStr = ""
+            End If
+            Dim Str = String.Format(RefreshTemplate, AccessToken, ClientToken, CharacterSelectStr)
             Dim Refresh = WebClient.PostAsync(String.Format(RefreshUri, BaseUri), New StringContent(
-                                            String.Format(RefreshTemplate, AccessToken, ClientToken), Encoding.UTF8, "application/json"))
+                                            String.Format(RefreshTemplate, AccessToken, ClientToken, CharacterSelectStr), Encoding.UTF8, "application/json"))
             Refresh.Wait()
             If Refresh.Result.StatusCode = Net.HttpStatusCode.OK Then
                 ' Success
@@ -106,19 +125,28 @@ Namespace Backend
                 For Each I As JsonElement In PropertyArray.EnumerateArray
                     If I.GetProperty("name").ToString().Equals("textures") Then
                         Dim DecodedInfo = JsonDocument.Parse(Encoding.Default.GetString(Convert.FromBase64String(I.GetProperty("value").ToString())))
-                        Dim SkinNode As JsonElement = DecodedInfo.RootElement.GetProperty("textures").GetProperty("SKIN")
-                        CharacterSkinUri = SkinNode.GetProperty("url").ToString()
-                        Dim JsonNodeTry As JsonElement
-                        If SkinNode.TryGetProperty("metadata", JsonNodeTry) Then
-                            If SkinNode.TryGetProperty("model", JsonNodeTry) Then
-                                If "slim".Equals(JsonNodeTry.ToString()) Then
-                                    CharacterSkinType = SkinType.Alex
-                                Else
-                                    CharacterSkinType = SkinType.Steve
+                        Dim TextureNode As JsonElement
+                        If DecodedInfo.RootElement.TryGetProperty("textures", TextureNode) Then
+                            Dim SkinNode As JsonElement
+                            If TextureNode.TryGetProperty("SKIN", SkinNode) Then
+                                CharacterSkinUri = SkinNode.GetProperty("url").ToString()
+                                Dim JsonNodeTry As JsonElement
+                                If SkinNode.TryGetProperty("metadata", JsonNodeTry) Then
+                                    If SkinNode.TryGetProperty("model", JsonNodeTry) Then
+                                        If "slim".Equals(JsonNodeTry.ToString()) Then
+                                            CharacterSkinType = SkinType.Alex
+                                        Else
+                                            CharacterSkinType = SkinType.Steve
+                                        End If
+                                    End If
                                 End If
+                                GoTo Processed
+                            Else
+                                Return ReturnStatus.NoSkin
                             End If
+                        Else
+                            Return ReturnStatus.NoSkin
                         End If
-                        GoTo Processed
                     End If
                 Next
 Processed:

@@ -61,6 +61,9 @@ Namespace Frontend
                     AvatarImage.Freeze()
                     Avatar.Source = AvatarImage
                 End If
+            ElseIf Status = ReturnStatus.NoSkin Then
+                File.Delete(Environment.CurrentDirectory + Path.DirectorySeparatorChar + AvatarGenerator.AvatarFileName)
+                Avatar.Source = New BitmapImage(New Uri("pack://application:,,,/Resources/defaultavatar.png"))
             End If
         End Function
         Private Async Sub Window_Loaded(sender As Object, e As RoutedEventArgs)

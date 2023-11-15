@@ -17,6 +17,7 @@ Public Enum ReturnStatus
     InvalidConfigurationItem
     InvaildPassword
     NoCharacter
+    NoSkin
 End Enum
 
 Public Class CommonValues

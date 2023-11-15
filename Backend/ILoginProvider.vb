@@ -23,9 +23,12 @@ Namespace Backend
         ' Perform refresh token process.
         ' @param    ref AccessToken         User's access token to refresh.
         ' @param    ref ClientToken         User's client token to refresh.
+        ' @param    UserId                  Character ID to bind.
+        ' @param    UserName                Character Name to bind.
         ' @return   ReturnStatus.Success    when token is successfully refreshed.
         ' @return   Other                   on failure.
-        Function PreformRefresh(ByRef AccessToken As String, ByRef ClientToken As String) As ReturnStatus
+        Function PreformRefresh(ByRef AccessToken As String, ByRef ClientToken As String,
+                                       Optional UserId As String = "", Optional Username As String = "") As ReturnStatus
 
         ' Check whether Tokens are valid.
         ' @param    AccessToken             User's access token to refresh.
