@@ -83,6 +83,15 @@ Namespace My.Resources
         End Property
         
         '''<summary>
+        '''  查找类似 Have you forgetten your password? 的本地化字符串。
+        '''</summary>
+        Public Shared ReadOnly Property InvalidPassword() As String
+            Get
+                Return ResourceManager.GetString("InvalidPassword", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
         '''  查找类似 Thou Art...? 的本地化字符串。
         '''</summary>
         Public Shared ReadOnly Property LoginPrompt() As String
@@ -97,6 +106,24 @@ Namespace My.Resources
         Public Shared ReadOnly Property Negative() As String
             Get
                 Return ResourceManager.GetString("Negative", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找类似 Character not selected! Try to use character name to login? 的本地化字符串。
+        '''</summary>
+        Public Shared ReadOnly Property NoCharacter() As String
+            Get
+                Return ResourceManager.GetString("NoCharacter", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  查找类似 Internet unavailable! 的本地化字符串。
+        '''</summary>
+        Public Shared ReadOnly Property NoInternet() As String
+            Get
+                Return ResourceManager.GetString("NoInternet", resourceCulture)
             End Get
         End Property
         
@@ -119,7 +146,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  查找类似 User Name 的本地化字符串。
+        '''  查找类似 Character Name 的本地化字符串。
         '''</summary>
         Public Shared ReadOnly Property Username() As String
             Get

@@ -124,11 +124,20 @@
     <value>点鸡登录</value>
     <comment>故意不小心的</comment>
   </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>你是忘记密码了吗？</value>
+  </data>
   <data name="LoginPrompt" xml:space="preserve">
     <value>旅行者，你的名字是？</value>
   </data>
   <data name="Negative" xml:space="preserve">
     <value>坏耶！</value>
+  </data>
+  <data name="NoCharacter" xml:space="preserve">
+    <value>尚未选择角色！尝试用角色名直接登录？</value>
+  </data>
+  <data name="NoInternet" xml:space="preserve">
+    <value>老板，没网了，加个钟！</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>密码</value>
@@ -137,6 +146,6 @@
     <value>MC，启动！</value>
   </data>
   <data name="Username" xml:space="preserve">
-    <value>用户名</value>
+    <value>角色名</value>
   </data>
 </root>

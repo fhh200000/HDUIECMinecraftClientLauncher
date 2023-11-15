@@ -12,6 +12,7 @@ Namespace Frontend
 
     Class MainWindow
 
+        Dim LoggedIn As Boolean
         Private Async Function StartDownloadProcess(Component As String, Version As String) As Task
             If Await CommonValues.DownloadProvider.StartDownloadingProcessAsync(Component) = ReturnStatus.Success Then
                 If CommonValues.DecompressionProvider.DecompressFile(Environment.CurrentDirectory + IO.Path.DirectorySeparatorChar + Component,
@@ -32,7 +33,9 @@ Namespace Frontend
         End Function
 
         Private Sub StartGame(sender As Object, e As RoutedEventArgs)
-            GameLauncher.LaunchGame()
+            If LoggedIn Then
+                GameLauncher.LaunchGame()
+            End If
         End Sub
         Public Sub New()
             ' This call is required by the designer.
@@ -81,6 +84,7 @@ Namespace Frontend
                     Else
                         Await UpdateAvatar()
                     End If
+                    LoggedIn = True
                 Else
                     CommonValues.RegistryConfigurationProvider.SetConfiguration("UserInformation.Username", "")
                 End If
@@ -124,7 +128,12 @@ Namespace Frontend
                 CommonValues.RegistryConfigurationProvider.SetConfiguration("Login.AccessToken", AccessToken)
                 Username.Content = PlayerName
                 LoginPrompt.Visibility = Visibility.Hidden
+            ElseIf Status = ReturnStatus.InvaildPassword Then
+                MsgBox(LocalizationString.InvalidPassword, vbExclamation)
+            ElseIf Status = ReturnStatus.NoCharacter Then
+                MsgBox(LocalizationString.NoCharacter, vbExclamation)
             End If
+            LoggedIn = True
             Await UpdateAvatar()
         End Sub
 

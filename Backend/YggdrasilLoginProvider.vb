@@ -50,7 +50,10 @@ Namespace Backend
                 ResultTask.Wait()
                 Dim Result = JsonDocument.Parse(ResultTask.Result)
                 AccessToken = Result.RootElement.GetProperty("accessToken").ToString()
-                Dim PlayerInfo = Result.RootElement.GetProperty("selectedProfile")
+                Dim PlayerInfo As JsonElement
+                If Not Result.RootElement.TryGetProperty("selectedProfile", PlayerInfo) Then
+                    Return ReturnStatus.NoCharacter
+                End If
                 PlayerId = PlayerInfo.GetProperty("id").ToString()
                 PlayerName = PlayerInfo.GetProperty("name").ToString()
                 Return ReturnStatus.Success

@@ -124,11 +124,20 @@
     <value>Chick to login</value>
     <comment>Meant to be careless</comment>
   </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Have you forgetten your password?</value>
+  </data>
   <data name="LoginPrompt" xml:space="preserve">
     <value>Thou Art...?</value>
   </data>
   <data name="Negative" xml:space="preserve">
     <value>Nein!</value>
+  </data>
+  <data name="NoCharacter" xml:space="preserve">
+    <value>Character not selected! Try to use character name to login?</value>
+  </data>
+  <data name="NoInternet" xml:space="preserve">
+    <value>Internet unavailable!</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -137,6 +146,6 @@
     <value>MC, launch!</value>
   </data>
   <data name="Username" xml:space="preserve">
-    <value>User Name</value>
+    <value>Character Name</value>
   </data>
 </root>

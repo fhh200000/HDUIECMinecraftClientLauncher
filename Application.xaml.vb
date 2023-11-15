@@ -3,9 +3,9 @@
 
 Option Strict On
 Option Explicit On
-Imports System.IO
 Imports HDUIECMinecraftClientLauncher.Backend
 Imports HDUIECMinecraftClientLauncher.Common
+Imports HDUIECMinecraftClientLauncher.My.Resources
 
 Class Application
 
@@ -13,7 +13,8 @@ Class Application
     Public Sub App_Startup(Sender As Object, e As StartupEventArgs)
         CommonValues.NormalConfigurationProvider = New IniConfigurationProvider
         If CommonValues.NormalConfigurationProvider.PrepareConfigurationEnvironment() <> ReturnStatus.Success Then
-            Throw New IOException("Configuration Provider initialization failed!")
+            MsgBox("Configuration Provider initialization failed!", vbCritical)
+            End
         End If
 
         ' TODO: Detect runtime OS information
@@ -22,7 +23,8 @@ Class Application
 
         CommonValues.DownloadProvider = New SynoDownloadProvider
         If CommonValues.DownloadProvider.PrepareDownloadEnvironment() <> ReturnStatus.Success Then
-            Throw New IOException("Download Provider initialization failed!")
+            'HZ said the availability of server cannot be guranteed.
+            MsgBox(LocalizationString.NoInternet, vbExclamation)
         End If
         CommonValues.DecompressionProvider = New ZipDecompressionProvider
         CommonValues.LoginProvider = New YggdrasilLoginProvider

@@ -16,6 +16,7 @@ Public Enum ReturnStatus
     ReadonlyFileSystem
     InvalidConfigurationItem
     InvaildPassword
+    NoCharacter
 End Enum
 
 Public Class CommonValues
