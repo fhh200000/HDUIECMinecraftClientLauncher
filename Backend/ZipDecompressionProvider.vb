@@ -5,6 +5,7 @@ Option Explicit On
 Option Strict On
 Imports System.IO
 Imports System.IO.Compression
+Imports System.Web.Configuration
 
 Namespace Backend
 
@@ -16,10 +17,19 @@ Namespace Backend
                                        Implements IDecompressionProvider.DecompressFile
             If Method = IDecompressionProvider.DecompressionMethod.RemoveFilesBeforeDecompression Then
                 Try
-                    Directory.Delete(DestinationDir, True)
-                    Directory.CreateDirectory(DestinationDir)
+                    Dim FileListFile = File.OpenRead(DestinationDir + Path.DirectorySeparatorChar _
+                                                      + ".minecraft" + Path.DirectorySeparatorChar + Path.GetFileName(FilePath) + ".FileList")
+                    Dim FileListStreamReader As New StreamReader(FileListFile)
+                    Dim FileListLine As String = FileListStreamReader.ReadLine()
+                    Do While FileListLine <> Nothing
+                        Try
+                            File.Delete(FileListLine)
+                        Catch
+                        End Try
+                        FileListLine = FileListStreamReader.ReadLine()
+                    Loop
                 Catch
-                    Return ReturnStatus.ReadonlyFileSystem
+                    ' It is possible that the older version DOES NOT contains a file list. Proceed anyway.
                 End Try
             End If
             Try

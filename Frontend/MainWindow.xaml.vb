@@ -17,7 +17,7 @@ Namespace Frontend
             If Await CommonValues.DownloadProvider.StartDownloadingProcessAsync(Component) = ReturnStatus.Success Then
                 If CommonValues.DecompressionProvider.DecompressFile(Environment.CurrentDirectory + IO.Path.DirectorySeparatorChar + Component,
                                                                     Environment.CurrentDirectory + IO.Path.DirectorySeparatorChar,
-                                                                    Backend.IDecompressionProvider.DecompressionMethod.OverwriteCurrentFiles) _
+                                                                    Backend.IDecompressionProvider.DecompressionMethod.RemoveFilesBeforeDecompression) _
                                                                     = ReturnStatus.Success Then
                     CommonValues.NormalConfigurationProvider.SetConfiguration("ComponentVersion." + Component, " " + Version)
                     For Each I In CType(DataContext, MainWindowViewModel).DownloadItems
@@ -35,6 +35,8 @@ Namespace Frontend
         Private Sub StartGame(sender As Object, e As RoutedEventArgs)
             If LoggedIn Then
                 GameLauncher.LaunchGame()
+            Else
+                ShowLoginDialog(Nothing, Nothing)
             End If
         End Sub
         Public Sub New()
