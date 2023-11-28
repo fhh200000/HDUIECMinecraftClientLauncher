@@ -15,9 +15,15 @@ Namespace Frontend
         Dim LoggedIn As Boolean
         Private Async Function StartDownloadProcess(Component As String, Version As String) As Task
             If Await CommonValues.DownloadProvider.StartDownloadingProcessAsync(Component) = ReturnStatus.Success Then
+                Dim DecompressionMethod As IDecompressionProvider.DecompressionMethod
+                If Version.Equals("(N/A)") Then
+                    DecompressionMethod = IDecompressionProvider.DecompressionMethod.OverwriteCurrentFiles
+                Else
+                    DecompressionMethod = IDecompressionProvider.DecompressionMethod.RemoveFilesBeforeDecompression
+                End If
                 If CommonValues.DecompressionProvider.DecompressFile(Environment.CurrentDirectory + IO.Path.DirectorySeparatorChar + Component,
                                                                     Environment.CurrentDirectory + IO.Path.DirectorySeparatorChar,
-                                                                    Backend.IDecompressionProvider.DecompressionMethod.RemoveFilesBeforeDecompression) _
+                                                                    DecompressionMethod) _
                                                                     = ReturnStatus.Success Then
                     CommonValues.NormalConfigurationProvider.SetConfiguration("ComponentVersion." + Component, " " + Version)
                     For Each I In CType(DataContext, MainWindowViewModel).DownloadItems

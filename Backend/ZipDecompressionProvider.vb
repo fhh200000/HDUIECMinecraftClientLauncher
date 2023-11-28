@@ -5,7 +5,6 @@ Option Explicit On
 Option Strict On
 Imports System.IO
 Imports System.IO.Compression
-Imports System.Web.Configuration
 
 Namespace Backend
 
@@ -28,6 +27,8 @@ Namespace Backend
                         End Try
                         FileListLine = FileListStreamReader.ReadLine()
                     Loop
+                    FileListStreamReader.Close()
+                    FileListFile.Close()
                 Catch
                     ' It is possible that the older version DOES NOT contains a file list. Proceed anyway.
                 End Try
